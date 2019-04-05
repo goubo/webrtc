@@ -12,8 +12,8 @@ let audioInput = document.querySelector("select#audioInput")
     , downloadRec = document.querySelector("button#downloadRec")
 var selectOver = false, buffer, mediaRecorder
 
-picture.width = 640;
-picture.height = 480;
+picture.width = 640
+picture.height = 480
 
 function start() {
     let videoInputDeviceId = videoInput.value
@@ -33,7 +33,7 @@ function start() {
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotUserMedieStream)
             .then(getMediaDevices)
-            .catch(handleError);
+            .catch(handleError)
     }
 }
 
@@ -45,9 +45,9 @@ function handleError(err) {
 function gotUserMedieStream(stream) {
     videoPlayer.srcObject = stream
     window.stream = stream
-    var videoTrack = stream.getVideoTracks()[0];
-    var videoConstraints = videoTrack.getSettings();
-    constraints.textContent = JSON.stringify(videoConstraints, null, 4);
+    var videoTrack = stream.getVideoTracks()[0]
+    var videoConstraints = videoTrack.getSettings()
+    constraints.textContent = JSON.stringify(videoConstraints, null, 4)
     return navigator.mediaDevices.enumerateDevices()
 }
 
@@ -74,9 +74,9 @@ function getMediaDevices(devicesInfos) {
 
 }
 
-start();
+start()
 
-videoInput.onchange = start;
+videoInput.onchange = start
 
 filterSelect.onchange = function () {
     videoPlayer.className = filterSelect.value
@@ -86,17 +86,16 @@ snapshot.onclick = function () {
         , 0, 0
         , picture.width, picture.height
     )
-    ;
 }
 
 recordButton.onclick = () => {
     if (recordButton.textContent === '开始录制') {
-        startRecord();
+        startRecord()
         recordButton.textContent = '停止录制'
         recPlayerButton.disabled = true
         downloadRec.disabled = true
     } else {
-        stopRecord();
+        stopRecord()
         recordButton.textContent = '开始录制'
         recPlayerButton.disabled = false
         downloadRec.disabled = false
@@ -121,7 +120,7 @@ function startRecord() {
         console.error("Failed to create Mediarecorder : ", e)
         return
     }
-    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.ondataavailable = handleDataAvailable
     mediaRecorder.start(10)
 }
 
@@ -141,4 +140,14 @@ recPlayerButton.onclick = () => {
     recPlayer.srcObject = null
     recPlayer.controls = true
     recPlayer.play()
+}
+
+downloadRec.onclick = () => {
+    var blob = new Blob(buffer, {type: "video/webm"})
+    var url = window.URL.createObjectURL(blob)
+    var a = document.createElement("a")
+    a.href = url
+    a.style.display = 'none'
+    a.download = "aaa.webm"
+    a.click()
 }
