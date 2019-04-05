@@ -1,21 +1,16 @@
 let audioInput = document.querySelector("select#audioInput")
     , audioOutput = document.querySelector("select#audioOutput")
     , videoInput = document.querySelector("select#videoInput")
-    , filterSelect = document.querySelector("select#filter")
-    , snapshot = document.querySelector("button#snapshot")
-    , picture = document.querySelector("canvas#picture")
     , audioPlayer = document.querySelector("audio#audioPlayer")
 var selectOver = false
 
-picture.width = 640;
-picture.height = 480;
-
 function start() {
-    let videoInputDeviceId = videoInput.value
+    let audioInputDeviceId = audioInput.value
     let constraints = {
         video: false,
         audio: {
-            noiseSuppression: true
+            noiseSuppression: true,
+            deviceId: audioInputDeviceId ? audioInputDeviceId : undefined
         }
 
     }
@@ -64,15 +59,5 @@ function getMediaDevices(devicesInfos) {
 
 start();
 
-videoInput.onchange = start;
+audioInput.onchange = start;
 
-// filterSelect.onchange = function () {
-//     videoPlayer.className = filterSelect.value
-// }
-// snapshot.onclick = function () {
-//     picture.getContext('2d').drawImage(videoPlayer
-//         , 0, 0
-//         , picture.width, picture.height
-//     )
-//     ;
-// }
