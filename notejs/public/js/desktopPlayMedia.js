@@ -7,7 +7,7 @@ let videoPlayer = document.querySelector("video#player")
     , recordButton = document.querySelector("button#recordButton")
     , recPlayerButton = document.querySelector("button#recPlayerButton")
     , downloadRec = document.querySelector("button#downloadRec")
-var selectOver = false, buffer, mediaRecorder
+var buffer, mediaRecorder
 
 
 function start() {
@@ -25,7 +25,7 @@ function start() {
     } else {
         navigator.mediaDevices.getDisplayMedia(constraints)
             .then(gotUserMedieStream)
-            .then(getMediaDevices)
+
             .catch(handleError)
     }
 }
@@ -44,28 +44,6 @@ function gotUserMedieStream(stream) {
     return navigator.mediaDevices.enumerateDevices()
 }
 
-
-function getMediaDevices(devicesInfos) {
-    if (selectOver) return
-    selectOver = true
-    devicesInfos.forEach(function (devicesInfo) {
-        console.log("kind=" + devicesInfo.kind +
-            ";label=" + devicesInfo.label +
-            ";deviceId=" + devicesInfo.deviceId +
-            ";groupId:" + devicesInfo.groupId)
-        let option = document.createElement("option")
-        option.text = devicesInfo.label
-        option.value = devicesInfo.deviceId
-        if (devicesInfo.kind === 'audioinput') {
-            audioInput.appendChild(option)
-        } else if (devicesInfo.kind === 'audiooutput') {
-            audioOutput.appendChild(option)
-        } else if (devicesInfo.kind === 'videoinput') {
-            videoInput.appendChild(option)
-        }
-    })
-
-}
 
 start()
 
