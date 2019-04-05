@@ -5,15 +5,16 @@ let audioInput = document.querySelector("select#audioInput")
 var selectOver = false
 
 function start() {
-    let deviceId = videoInput.value
+    let videoInputDeviceId = videoInput.value
     let constraints = {
         video: {
-            frameRate: 30
+            frameRate: 30,
+            deviceId: videoInputDeviceId ? videoInputDeviceId : undefined
         },
         audio: {
             noiseSuppression: true
-        },
-        deviceId: deviceId ? deviceId : undefined
+        }
+
     }
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia(constraints)) {
         console.log("浏览器不支持 mediaDevices 接口")
@@ -65,4 +66,4 @@ function getMediaDevices(devicesInfos) {
 
 start();
 
-videoInput.onchange = start();
+videoInput.onchange = start;
