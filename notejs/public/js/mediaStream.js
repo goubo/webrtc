@@ -7,8 +7,8 @@ let audioInput = document.querySelector("select#audioInput")
     , picture = document.querySelector("canvas#picture")
 var selectOver = false
 
-// picture.width = 320;
-// picture.height = 240;
+picture.width = 640;
+picture.height = 480;
 
 function start() {
     let videoInputDeviceId = videoInput.value
@@ -75,6 +75,7 @@ filterSelect.onchange = function () {
 snapshot.onclick = function () {
     picture.getContext('2d').drawImage(videoPlayer
         , 0, 0
-            .videoPlayer.width, videoPlayer, height
-    );
+        , videoPlayer.width, videoPlayer, height
+    )
+    ;
 }
