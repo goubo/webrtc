@@ -5,7 +5,7 @@ let audioInput = document.querySelector("select#audioInput")
     , filterSelect = document.querySelector("select#filter")
     , snapshot = document.querySelector("button#snapshot")
     , picture = document.querySelector("canvas#picture")
-    , constraints = document.querySelector("div#constraints")
+    , constraints = document.querySelector("pre#constraints")
 var selectOver = false
 
 picture.width = 640;
@@ -42,7 +42,7 @@ function gotUserMedieStream(stream) {
     videoPlayer.srcObject = stream
     var videoTrack = stream.getVideoTracks()[0];
     var videoConstraints = videoTrack.getSettings();
-    constraints.innerHTML = JSON.stringify(videoConstraints, null, 4);
+    constraints.textContent = JSON.stringify(videoConstraints, null, 4);
     return navigator.mediaDevices.enumerateDevices()
 }
 
