@@ -16,7 +16,7 @@ function start() {
     let constraints = {
         video: {
             frameRate: 30,
-            deviceId: videoInputDeviceId ? videoInputDeviceId : undefined
+            deviceId: videoInputDeviceId ? {exact: videoInputDeviceId} : undefined
         },
         audio: {
             noiseSuppression: true
@@ -43,7 +43,6 @@ function gotUserMedieStream(stream) {
     var videoTrack = stream.getVideoTracks()[0];
     var videoConstraints = videoTrack.getSettings();
     constraints.textContent = JSON.stringify(videoConstraints, null, 4);
-    constraints
     return navigator.mediaDevices.enumerateDevices()
 }
 
