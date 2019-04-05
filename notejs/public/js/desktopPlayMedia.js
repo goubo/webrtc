@@ -12,19 +12,15 @@ var buffer, mediaRecorder
 
 function start() {
     let constraints = {
-        video: {
-            frameRate: 30
-        },
-        audio: {
-            noiseSuppression: true
-        }
-
+        video: true,
+        audio: false
     }
+    
     if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia()) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
         navigator.mediaDevices.getDisplayMedia(constraints)
-            .then(gotUserMedieStream)
+            .then(gotDisplayMedieStream)
 
             .catch(handleError)
     }
@@ -35,7 +31,7 @@ function handleError(err) {
     console.log("error:" + err.name + ":" + err.message)
 }
 
-function gotUserMedieStream(stream) {
+function gotDisplayMedieStream(stream) {
     videoPlayer.srcObject = stream
     window.stream = stream
     var videoTrack = stream.getVideoTracks()[0]
