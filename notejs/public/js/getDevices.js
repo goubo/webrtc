@@ -10,8 +10,11 @@ function handleError(err) {
     console.log("error:" + err.name + ":" + err.message())
 }
 
-function getMediaDevices(devicesInfos){
+function getMediaDevices(devicesInfos) {
     devicesInfos.forEach(function (devicesInfo) {
-        console.log("kind="+devicesInfo.kind+";lable="+devicesInfo.label+";id="+devicesInfo.id+";groupId:"+devicesInfo.groupId)
-        })
+        console.log("kind=" + devicesInfo.kind +
+            ";label=" + devicesInfo.label +
+            ";id=" + devicesInfo.deviceId +
+            ";groupId:" + devicesInfo.groupId)
+    })
 }
