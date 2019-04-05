@@ -2,6 +2,7 @@ let audioInput = document.querySelector("select#audioInput")
     , audioOutput = document.querySelector("select#audioOutput")
     , videoInput = document.querySelector("select#videoInput")
     , videoPlayer = document.querySelector("video#player")
+var selectOver = false
 
 function start() {
     let deviceId = videoInput.value
@@ -36,6 +37,8 @@ function gotUserMedieStream(stream) {
 
 
 function getMediaDevices(devicesInfos) {
+    if (selectOver) return
+    selectOver = true
     devicesInfos.forEach(function (devicesInfo) {
         console.log("kind=" + devicesInfo.kind +
             ";label=" + devicesInfo.label +
