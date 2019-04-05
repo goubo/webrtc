@@ -73,8 +73,9 @@ filterSelect.onchange = function () {
     videoPlayer.className = filterSelect.value
 }
 snapshot.onclick = function () {
-    picture.getContext('2d').drawImage(videoPlayer,
-        0, 0,
-        picture.width, picture, height
+    picture.getContext('2d').drawImage(videoPlayer
+        , 0, 0
+
+        //.picture.width, picture, height
     );
 }
