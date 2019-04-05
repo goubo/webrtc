@@ -136,7 +136,7 @@ function stopRecord() {
 }
 
 recPlayerButton.onclick = () => {
-    var blob = new blob(buffer, {type: "video/webm"})
+    var blob = new Blob(buffer, {type: "video/webm"})
     recPlayer.src = window.URL.createObjectURL(blob)
     recPlayer.srcObject = null
     recPlayer.controls = true
