@@ -6,18 +6,18 @@ var selectOver = false
 
 function start() {
     let deviceId = videoInput.value
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia()) {
+    let constraints = {
+        video: {
+            frameRate: 30
+        },
+        audio: {
+            noiseSuppression: true
+        },
+        deviceId: deviceId ? deviceId : undefined
+    }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia(constraints)) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
-        var constraints = {
-            video: {
-                frameRate: 30
-            },
-            audio: {
-                noiseSuppression: true
-            },
-            deviceId: deviceId ? deviceId : undefined
-        }
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotUserMedieStream)
             .then(getMediaDevices)
@@ -44,7 +44,7 @@ function getMediaDevices(devicesInfos) {
             ";label=" + devicesInfo.label +
             ";id=" + devicesInfo.deviceId +
             ";groupId:" + devicesInfo.groupId)
-        var option = document.createElement("option")
+        let option = document.createElement("option")
         option.text = devicesInfo.label
         option.value = devicesInfo.deviceId
         if (devicesInfo.kind === 'audioinput') {
