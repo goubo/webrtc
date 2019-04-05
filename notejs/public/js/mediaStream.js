@@ -42,7 +42,7 @@ function gotUserMedieStream(stream) {
     videoPlayer.srcObject = stream
     var videoTrack = stream.getVideoTracks()[0];
     var videoConstraints = videoTrack.getSettings();
-    constraints.textContent = JSON.stringify(videoConstraints, null, 4);
+    constraints.innerHTML = JSON.stringify(videoConstraints, null, 4);
     return navigator.mediaDevices.enumerateDevices()
 }
 
