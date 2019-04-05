@@ -43,7 +43,7 @@ function getMediaDevices(devicesInfos) {
     devicesInfos.forEach(function (devicesInfo) {
         console.log("kind=" + devicesInfo.kind +
             ";label=" + devicesInfo.label +
-            ";id=" + devicesInfo.deviceId +
+            ";deviceId=" + devicesInfo.deviceId +
             ";groupId:" + devicesInfo.groupId)
         let option = document.createElement("option")
         option.text = devicesInfo.label
@@ -54,11 +54,6 @@ function getMediaDevices(devicesInfos) {
             audioOutput.appendChild(option)
         } else if (devicesInfo.kind === 'videoinput') {
             videoInput.appendChild(option)
-            let option2 = document.createElement("option")
-            option2.text = devicesInfo.label
-            option2.value = devicesInfo.deviceId
-            videoInput.appendChild(option2)
-
         }
     })
 
