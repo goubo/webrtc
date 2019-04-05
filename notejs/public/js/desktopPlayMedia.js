@@ -14,7 +14,6 @@ function start() {
     let constraints = {
         video: {
             frameRate: 30,
-            deviceId: videoInputDeviceId ? {exact: videoInputDeviceId} : undefined
         },
         audio: {
             noiseSuppression: true
