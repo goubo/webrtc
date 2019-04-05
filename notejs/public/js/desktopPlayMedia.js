@@ -13,7 +13,7 @@ var selectOver = false, buffer, mediaRecorder
 function start() {
     let constraints = {
         video: {
-            frameRate: 30,
+            frameRate: 30
         },
         audio: {
             noiseSuppression: true
