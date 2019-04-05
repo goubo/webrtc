@@ -12,7 +12,7 @@ var audioInput = document.querySelector("select#audioInput")
 
 
 function handleError(err) {
-    console.log("error:" + err.name + ":" + err.message())
+    console.log("error:" + err.name + ":" + err.message)
 }
 
 function getMediaDevices(devicesInfos) {
