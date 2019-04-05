@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>桌面获取测试</title>
+</head>
+<body>
+<div>
+    <label>Filter:</label>
+    <select id="filter">
+        <option value="none">None</option>
+        <option value="grayscale">Grayscale:灰度</option>
+        <option value="sepia">sepia:褐色</option>
+        <option value="blur">blur:模糊</option>
+        <option value="inver">inver:翻转</option>
+    </select>
+</div>
+<label>视频播放，视频信息</label>
+<div>
+    <table>
+        <tr>
+            <td>
+                <video autoplay playsinline id="player"></video>
+            </td>
+            <td>
+                <pre id="constraints"></pre>
+            </td>
+        </tr>
+
+    </table>
+</div>
+<label>视频截图</label>
+<div>
+    <button id="snapshot">截图</button>
+    <canvas id="picture"></canvas>
+</div>
+<label>视频录制</label>
+<div>
+    <video playsinline id="recPlayer"></video>
+    <br/>
+    <button id="recordButton">开始录制</button>
+    <button id="recPlayerButton">播放录制</button>
+    <button id="downloadRec">下载录制文件</button>
+
+</div>
+</body>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="js/mediaStream.js"></script>
+</html>
