@@ -75,7 +75,7 @@ filterSelect.onchange = function () {
 snapshot.onclick = function () {
     picture.getContext('2d').drawImage(videoPlayer
         , 0, 0
-        , videoPlayer.width, videoPlayer, height
+        , videoPlayer.width, videoPlayer.height
     )
     ;
 }
