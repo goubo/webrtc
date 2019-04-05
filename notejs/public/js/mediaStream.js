@@ -53,6 +53,7 @@ function getMediaDevices(devicesInfos) {
             audioOutput.appendChild(option)
         } else if (devicesInfo.kind === 'videoinput') {
             videoInput.appendChild(option)
+            videoInput.appendChild(option)
 
         }
     })
