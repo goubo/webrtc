@@ -53,7 +53,10 @@ function getMediaDevices(devicesInfos) {
             audioOutput.appendChild(option)
         } else if (devicesInfo.kind === 'videoinput') {
             videoInput.appendChild(option)
-            videoInput.appendChild(option)
+            let option2 = document.createElement("option")
+            option2.text = devicesInfo.label
+            option2.value = devicesInfo.deviceId
+            videoInput.appendChild(option2)
 
         }
     })
