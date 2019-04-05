@@ -126,7 +126,7 @@ function startRecord() {
 }
 
 function handleDataAvailable(e) {
-    if (e && e.data && e.data.datasize > 0) {
+    if (e && e.data && e.data.size > 0) {
         buffer.push(e.data)
     }
 }
