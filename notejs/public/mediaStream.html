@@ -18,6 +18,16 @@
 <div>
     <video autoplay playsinline id="player"></video>
 </div>
+<div>
+    <label>Filter:</label>
+    <select id="filter">
+        <option value="none">None</option>
+        <option value="grayscale">Grayscale:灰度</option>
+        <option value="sepia">sepia:褐色</option>
+        <option value="blur">blur:模糊</option>
+        <option value="invert">Invert:翻转</option>
+    </select>
+</div>
 </body>
 <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 <script src="js/mediaStream.js"></script>

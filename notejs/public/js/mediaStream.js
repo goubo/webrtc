@@ -2,6 +2,7 @@ let audioInput = document.querySelector("select#audioInput")
     , audioOutput = document.querySelector("select#audioOutput")
     , videoInput = document.querySelector("select#videoInput")
     , videoPlayer = document.querySelector("video#player")
+    , filterSelect = document.querySelector("select#filter")
 var selectOver = false
 
 function start() {
@@ -62,3 +63,7 @@ function getMediaDevices(devicesInfos) {
 start();
 
 videoInput.onchange = start;
+
+filterSelect.onchange = function () {
+    videoPlayer.className = filterSelect.value
+}
