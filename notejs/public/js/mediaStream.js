@@ -6,7 +6,7 @@ if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia()) {
         audio: true
     }
     navigator.mediaDevices.getUserMedia(constraints)
-        .then(getMediaDevices)
+        .then(gotUserMedieStream)
         .catch(handleError);
 }
 var videlPlayer = document.querySelector("video#player")
