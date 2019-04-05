@@ -3,7 +3,12 @@ let audioInput = document.querySelector("select#audioInput")
     , videoInput = document.querySelector("select#videoInput")
     , videoPlayer = document.querySelector("video#player")
     , filterSelect = document.querySelector("select#filter")
+    , snapshot = document.querySelector("button#snapshot")
+    , picture = document.querySelector("canvas#picture")
 var selectOver = false
+
+// picture.width = 320;
+// picture.height = 240;
 
 function start() {
     let videoInputDeviceId = videoInput.value
@@ -66,4 +71,10 @@ videoInput.onchange = start;
 
 filterSelect.onchange = function () {
     videoPlayer.className = filterSelect.value
+}
+snapshot.onclick = function () {
+    picture.getContent('2d').drawImage(videoPlayer,
+        0, 0,
+        picture.width, picture, height
+    );
 }
