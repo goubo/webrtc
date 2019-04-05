@@ -107,9 +107,10 @@ recordButton.onclick = () => {
 function startRecord() {
     buffer = []
     var options = {
-        mimeType: 'video/webm;codecs=vp8'
+        mimeType: 'video/webm'
     }
-    if (MediaRecorder.isTypeSupported(options.mimeType)) {
+    if (!MediaRecorder.isTypeSupported(options.mimeType)
+    ) {
         console.error('${options.mimeType} is not supported!!')
         return
     }
