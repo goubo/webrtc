@@ -1,11 +1,10 @@
-var audioInput = document.querySelector("select#audioInput")
+let audioInput = document.querySelector("select#audioInput")
     , audioOutput = document.querySelector("select#audioOutput")
     , videoInput = document.querySelector("select#videoInput")
-
-var videoPlayer = document.querySelector("video#player")
+    , videoPlayer = document.querySelector("video#player")
 
 function start() {
-    var deviceId = videoInput.value()
+    let deviceId = videoInput.value
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia()) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
