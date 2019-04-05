@@ -2,8 +2,12 @@ if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia()) {
     console.log("浏览器不支持 mediaDevices 接口")
 } else {
     var constraints = {
-        video: true,
-        audio: true
+        video: {
+            frameRate: 30
+        },
+        audio: {
+            noiseSuppression: true
+        }
     }
     navigator.mediaDevices.getUserMedia(constraints)
         .then(gotUserMedieStream)
