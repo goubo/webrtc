@@ -6,7 +6,11 @@ let audioInput = document.querySelector("select#audioInput")
     , snapshot = document.querySelector("button#snapshot")
     , picture = document.querySelector("canvas#picture")
     , constraints = document.querySelector("pre#constraints")
-var selectOver = false
+    , recPlayer = document.querySelector("video#recPlayer")
+    , recordButton = document.querySelector("button#recordButton")
+    , recPlayerButton = document.querySelector("button#recPlayerButton")
+    , downloadRec = document.querySelector("button#downloadRec")
+var selectOver = false, buffer, mediaRecorder
 
 picture.width = 640;
 picture.height = 480;
@@ -40,6 +44,7 @@ function handleError(err) {
 
 function gotUserMedieStream(stream) {
     videoPlayer.srcObject = stream
+    window.stream = stream
     var videoTrack = stream.getVideoTracks()[0];
     var videoConstraints = videoTrack.getSettings();
     constraints.textContent = JSON.stringify(videoConstraints, null, 4);
@@ -82,4 +87,57 @@ snapshot.onclick = function () {
         , picture.width, picture.height
     )
     ;
+}
+
+recordButton.onclick = () => {
+    if (recordButton.textContent === '开始录制') {
+        startRecord();
+        recordButton.textContent = '停止录制'
+        recPlayerButton.disabled = true
+        downloadRec.disabled = true
+    } else {
+        stopRecord();
+        recordButton.textContent = '开始录制'
+        recPlayerButton.disabled = false
+        downloadRec.disabled = false
+    }
+}
+
+
+function startRecord() {
+    buffer = []
+    var options = {
+        mimeType: 'video/webm;codecs=vp8'
+    }
+    if (MediaRecorder.isTypeSupported(options.mimeType)) {
+        console.error('${options.mimeType} is not supported!!')
+        return
+    }
+    try {
+        mediaRecorder = new MediaRecorder(window.stream, options)
+
+    } catch (e) {
+        console.error("Failed to create Mediarecorder : ", e)
+        return
+    }
+    mediaRecorder.ondataavailable = handleDataAvailable;
+    mediaRecorder.start(10)
+}
+
+function handleDataAvailable(e) {
+    if (e && e.data && e.data.datasize > 0) {
+        buffer.push(e.data)
+    }
+}
+
+function stopRecord() {
+    mediaRecorder.stop()
+}
+
+recPlayerButton.onclick = () => {
+    var blob = new blob(buffer, {type: "video/webm"})
+    recPlayer.src = window.URL.createObjectURL(blob)
+    recPlayer.srcObject = null
+    recPlayer.controls = true
+    recPlayer.play()
 }
