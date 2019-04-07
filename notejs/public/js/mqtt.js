@@ -20,7 +20,8 @@ function start() {
     joinButton.disabled = true
     sendButton.disable = false
     var willPayload = {"type": "leave", "userName": userName}
-    client = mqtt.connect('ws://v.goujinbo.com:61614')
+    // client = mqtt.connect('ws://v.goujinbo.com:61614')
+    client = mqtt.connect('wss://v.goujinbo.com:61617')
     //mqtt 连接
     client.on("message", function (topic, payload) {
         gotPayload(payload)
