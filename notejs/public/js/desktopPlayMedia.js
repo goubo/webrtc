@@ -15,7 +15,7 @@ function start() {
         video: true,
         audio: false
     }
-    
+
     if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia()) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {

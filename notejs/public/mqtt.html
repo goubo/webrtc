@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>会议室：</td>
+        <td><input id="roomNumberInput"/></td>
+    </tr>
+    <tr>
+        <td>用户名：</td>
+        <td><input id="userNameInput"/></td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <button id="joinButton">join</button>
+            <!--            <button id="leaveButton">leave</button>-->
+        </td>
+    </tr>
+
+    <tr>
+        <td></td>
+        <td>
+            <pre id="textPre" style="border:dashed 1px blue; width: 400px;height: 200px;overflow:auto"></pre>
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td><input id="textarea" style="border:dashed 1px chartreuse; width: 400px;height: 30px"/>
+
+        </td>
+    </tr>
+    <tr>
+        <td></td>
+        <td>
+            <button id="sendButton">发送</button>
+        </td>
+    </tr>
+</table>
+
+</body>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="js/mqtt.js"></script>
+
+</html>
