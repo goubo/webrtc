@@ -2,7 +2,7 @@ let roomNumberInput = document.querySelector("input#roomNumberInput")
     , userNameInput = document.querySelector("input#userNameInput")
     , joinButton = document.querySelector("button#joinButton")
     , sendButton = document.querySelector("button#sendButton")
-    , leaveButton = document.querySelector("button#leaveButton")
+    // , leaveButton = document.querySelector("button#leaveButton")
     , textPre = document.querySelector("pre#textPre")
     , textarea = document.querySelector("input#textarea")
 
@@ -71,4 +71,4 @@ function leave() {
 
 joinButton.onclick = start
 sendButton.onclick = sendMessage
-leaveButton.onclick = leave
+// leaveButton.onclick = leave
