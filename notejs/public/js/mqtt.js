@@ -27,7 +27,6 @@ function start() {
         gotPayload(payload)
     })
 
-    client.on("offline")
     let joinMessage = {
         "type": "join",
         "userName": userName
