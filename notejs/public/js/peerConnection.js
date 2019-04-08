@@ -16,7 +16,7 @@ function start() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
-        constraints = {video: true, audio: false}
+        let constraints = {video: true, audio: false}
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotUserMediaStream)
             .then(getMediaDevices)
