@@ -7,9 +7,33 @@
 </head>
 <body>
 <div>
-    <video id="localVideo" autoplay playsinline></video>
+    <table>
+        <tr>
+            <td><h2>Local</h2></td>
+            <td><h2>Remote</h2></td>
+        </tr>
+        <tr>
+            <td>
+                <video id="localVideo" autoplay playsinline></video>
+            </td>
+            <td>
+                <video id="remoteVideo" autoplay playsinline></video>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                offer SDP:
+                <pre></pre>
+            </td>
+            <td>
+                answer SDP:
+                <pre></pre>
+            </td>
+        </tr>
 
-    <video id="remoteVideo" autoplay playsinline></video>
+    </table>
+
+
 </div>
 <div>
     <button id="start">start</button>
