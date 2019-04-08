@@ -67,8 +67,8 @@ function getOffer(desc) {
     pc2.createAnswer().then(getAnswer).catch(handleError)
 }
 
-function getRemoteStream(streams) {
-    remoteVideo.srcObject = streams[0]
+function getRemoteStream(d) {
+    remoteVideo.srcObject = d.streams[0]
 }
 
 function gotUserMediaStream(stream) {
