@@ -19,7 +19,7 @@ function start() {
         let constraints = {video: true, audio: false}
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotUserMediaStream)
-            .then(getMediaDevices)
+            // .then(getMediaDevices)
             .catch(handleError)
     }
 }
@@ -31,7 +31,7 @@ function call() {
 
 }
 
-function getMediaDevices() {
+function gotUserMediaStream() {
     localVideo.srcObject = stream
     localStream = stream
 }
