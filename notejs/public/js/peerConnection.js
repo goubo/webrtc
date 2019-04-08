@@ -31,16 +31,16 @@ function call() {
     pc2 = new webkitRTCPeerConnection()//接收端
 
     pc1.onicecandidate = (e) => {
-        pc2.addIceCandidate(e.candidate).catch(handleError)
+        pc2.addIceCandidate(e.candidate)
     }
 
     pc2.onicecandidate = (e) => {
-        pc1.addIceCandidate(e.candidate).catch(handleError)
+        pc1.addIceCandidate(e.candidate)
     }
     pc2.ontrack = getRemoteStream
 
     localStream.getTracks().forEach(t => {
-        pc1.addTrack(t)
+        pc1.addTrack(t, localStream)
     })
     let offerOption = {
         offerToReceiveAudio: 0,
@@ -51,19 +51,19 @@ function call() {
 }
 
 function getAnswer(desc) {
-    pc2.setLocalDescription(desc).catch(handleError)
+    pc2.setLocalDescription(desc)
     //发送desc到信令
     //发给对方
     //下面是第一方收到的信令
-    pc1.setRemoteDescription(desc).catch(handleError)
+    pc1.setRemoteDescription(desc)
 }
 
 function getOffer(desc) {
-    pc1.setLocalDescription(desc).catch(handleError)
+    pc1.setLocalDescription(desc)
     // 发送 desc 到信令服务器
     // 发给对方
     // 下面是第二方收到后
-    pc2.setRemoteDescription(desc).catch(handleError)
+    pc2.setRemoteDescription(desc)
     pc2.createAnswer().then(getAnswer).catch(handleError)
 }
 
