@@ -3,6 +3,8 @@ let localVideo = document.querySelector("video#localVideo")
     , hangupButton = document.querySelector("button#hangup")
     , callButton = document.querySelector("button#call")
     , startButton = document.querySelector("button#start")
+    , answerSDPTextarea = document.querySelector("textarea#answerSDP")
+    , offerSDPTextarea = document.querySelector("textarea#offerSDP")
 
 var localStream, pc1, pc2
 
@@ -56,6 +58,7 @@ function call() {
 
 function getAnswer(desc) {
     pc2.setLocalDescription(desc)
+    answerSDPTextarea.value = desc.sdp
     //发送desc到信令
     //发给对方
     //下面是第一方收到的信令
@@ -64,6 +67,7 @@ function getAnswer(desc) {
 
 function getOffer(desc) {
     pc1.setLocalDescription(desc)
+    offerSDPTextarea.value = desc.sdp
     // 发送 desc 到信令服务器
     // 发给对方
     // 下面是第二方收到后
