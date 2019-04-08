@@ -9,8 +9,7 @@ var localStream
 startButton.onclick = start
 callButton.onclick = call
 hangupButton.onclick = hangup
-callButton.disable = true
-hangupButton.disable = true
+
 
 function start() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -28,7 +27,48 @@ function hangup() {
 }
 
 function call() {
+    pc1 = new webkitRTCPeerConnection()//发送端
+    pc2 = new webkitRTCPeerConnection()//接收端
 
+    pc1.onicecandidate = (e) => {
+        pc2.addIceCandidate(e.candidate)
+    }
+
+    pc2.onicecandidate = (e) => {
+        pc1.addIceCandidate(e.candidate)
+    }
+    pc2.ontrack = getRemoteStream
+
+    localStream.getTracks().forEach(t => {
+        pc1.addTrack(t)
+    })
+    var offerOption = {
+        offerToReceiveAudio: 0,
+        offerToReceiveVideo: 1
+    }
+    pc1.createOffer().then(getLocalDescription).catch(handleError)
+
+}
+
+function getAnswer(desc) {
+    pc2.setLocalDescription(desc)
+    //发送desc到信令
+    //发给对方
+    //下面是第一方收到的信令
+    pc1.setRemoteDescription(desc)
+}
+
+function getLocalDescription(desc) {
+    pc1.setLocalDescription(desc)
+    // 发送 desc 到信令服务器
+    // 发给对方
+    // 下面是第二方收到后
+    pc2.setRemoteDescription(desc)
+    pc2.createAnswer().then(getAnswer).catch(handleError)
+}
+
+function getRemoteStream(streams) {
+    remoteVideo.srcObject = streams[0]
 }
 
 function gotUserMediaStream(stream) {
