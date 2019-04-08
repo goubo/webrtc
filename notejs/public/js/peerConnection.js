@@ -4,7 +4,7 @@ let localVideo = document.querySelector("video#localVideo")
     , callButton = document.querySelector("button#call")
     , startButton = document.querySelector("button#start")
 
-var localStream
+var localStream, pc1, pc2
 
 startButton.onclick = start
 callButton.onclick = call
@@ -24,6 +24,10 @@ function start() {
 }
 
 function hangup() {
+    pc1.close()
+    pc2.close()
+    pc1 = null
+    pc2 = null
 }
 
 function call() {
@@ -31,11 +35,11 @@ function call() {
     pc2 = new webkitRTCPeerConnection()//接收端
 
     pc1.onicecandidate = (e) => {
-        pc2.addIceCandidate(e.candidate)
+        pc2.addIceCandidate(e.candidate).catch(handleError)
     }
 
     pc2.onicecandidate = (e) => {
-        pc1.addIceCandidate(e.candidate)
+        pc1.addIceCandidate(e.candidate).catch(handleError)
     }
     pc2.ontrack = getRemoteStream
 
