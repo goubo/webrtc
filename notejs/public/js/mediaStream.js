@@ -31,7 +31,7 @@ function start() {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
         navigator.mediaDevices.getUserMedia(constraints)
-            .then(gotUserMedieStream)
+            .then(gotUserMediaStream)
             .then(getMediaDevices)
             .catch(handleError)
     }
@@ -42,7 +42,7 @@ function handleError(err) {
     console.log("error:" + err.name + ":" + err.message)
 }
 
-function gotUserMedieStream(stream) {
+function gotUserMediaStream(stream) {
     videoPlayer.srcObject = stream
     window.stream = stream
     var videoTrack = stream.getVideoTracks()[0]

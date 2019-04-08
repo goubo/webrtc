@@ -4,8 +4,8 @@ var http = require('http')
 var app = express();
 app.use(serveIndex('./public/'))
 app.use(express.static('./public/'))
-
 http.createServer(app).listen(8081)
+
 person = new Object();
 person.firstname = "Bill";
 app.all('*', function (req, res, next) {
