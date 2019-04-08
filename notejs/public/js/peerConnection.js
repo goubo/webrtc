@@ -31,7 +31,7 @@ function call() {
 
 }
 
-function gotUserMediaStream() {
+function gotUserMediaStream(stream) {
     localVideo.srcObject = stream
     localStream = stream
 }
