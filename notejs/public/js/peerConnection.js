@@ -42,11 +42,11 @@ function call() {
     localStream.getTracks().forEach(t => {
         pc1.addTrack(t)
     })
-    var offerOption = {
+    let offerOption = {
         offerToReceiveAudio: 0,
         offerToReceiveVideo: 1
     }
-    pc1.createOffer().then(getLocalDescription).catch(handleError)
+    pc1.createOffer(offerOption).then(getOffer).catch(handleError)
 
 }
 
@@ -58,7 +58,7 @@ function getAnswer(desc) {
     pc1.setRemoteDescription(desc)
 }
 
-function getLocalDescription(desc) {
+function getOffer(desc) {
     pc1.setLocalDescription(desc)
     // 发送 desc 到信令服务器
     // 发给对方
