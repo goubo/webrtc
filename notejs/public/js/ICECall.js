@@ -11,7 +11,12 @@ let playerDiv = document.querySelector("div#playerDiv"),
             credential: "trun",
             credentialType: "password"
         }]
-    };
+    },
+    offerOption = {
+        offerToReceiveAudio: true,
+        offerToReceiveVideo: true,
+        iceRestart: true
+    }
 
 var localStream, pc1, baseTopic = "mqtt/dome/conference/", id = randomWord(true, 8, 12), client
 
@@ -36,7 +41,7 @@ function gotUserMediaStream(stream) {
     client = mqtt.connect('wss://v.goujinbo.com:61617')
     //mqtt 连接
     client.on("message", function (topic, payload) {
-        console.log([topic, payload].join(": "));
+        console.log([topic, payload].join("::"));
         gotPayload(payload)
     })
 
@@ -49,7 +54,7 @@ function gotUserMediaStream(stream) {
     console.log(baseTopic + "server/" + roomNumber.value)
     console.log(baseTopic + "server/" + roomNumber.value + "/" + id)
     client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(joinMessage))
-    client.subscribe([baseTopic + "server/" + roomNumber.value, baseTopic + "server/" + roomNumber.value + "/" + id])
+    client.subscribe([baseTopic + "server/" + roomNumber.value + "/" + id])
 
 
 }
@@ -58,36 +63,39 @@ function gotPayload(payloadObject) {
     var payload = JSON.parse(payloadObject)
     if (payload.type === 'first') {
 
-
     } else if (payload.type === 'refuse') {
         //拒绝连接
-
     } else if (payload.type === 'second') {
         //第二个进入的，接收端
         //发offer
         //发起端，创建连接
-
         pc1 = new webkitRTCPeerConnection(configuration)//发送端
         pc1.onicecandidate = (e) => {
             // e.candidate.candidate;
             if (e.candidate) {
                 //发送candidate 到接收端
-                console.log("candidate" + e.candidate.candidate)
+
+                var data = {
+                    "type": "candidate",
+                    "data": e.candidate,
+                    "id": id,
+                    "roomNumber": roomNumber.value,
+                    "index": 0 //发给第一个人
+                }
+                client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
+
             }
 
         }
+        pc1.ontrack = getRemoteStream
         localStream.getTracks().forEach(t => {
             pc1.addTrack(t, localStream)
         })
-        let offerOption = {
-            offerToReceiveAudio: 0,
-            offerToReceiveVideo: 1,
-            iceRestart: true
-        }
+
         pc1.createOffer(offerOption).then(getOffer).catch(handleError)
 
-
     } else if (payload.type === 'offer') {
+
         //发启动发送的offer，应该是接收端去接
         //第一个人，接收端处理
         pc1 = new webkitRTCPeerConnection(configuration)//发送端
@@ -95,21 +103,33 @@ function gotPayload(payloadObject) {
             // e.candidate.candidate;
             if (e.candidate) {
                 //发送candidate 到接收端
-                console.log("candidate" + e.candidate.candidate)
+
+                var data = {
+                    "type": "candidate",
+                    "data": e.candidate,
+                    "id": id,
+                    "roomNumber": roomNumber.value,
+                    "index": 1 //发给第二个人
+                }
+                client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
             }
         }
 
         pc1.ontrack = getRemoteStream
-
+        localStream.getTracks().forEach(t => {
+            pc1.addTrack(t, localStream)
+        })
+        pc1.setRemoteDescription(payload).catch(handleError)
+        pc1.createAnswer(offerOption).then(getAnswer).catch(handleError);
     } else if (payload.type === 'answer') {
         //接收端返回的answer 应该是发起端端去接
-
+        console.log("answer---", payload)
+        pc1.setRemoteDescription(payload).catch(handleError)
     } else if (payload.type === 'candidate') {
-        var candidate = new RTCIceCandidate({
-            sdpMLineIndex: payload.data.label,
-            candidate: payload.data.candidate
-        });
-        pc1.addIceCandidate(candidate).catch(handleError)
+        console.log("candidate---")
+        pc1.addIceCandidate(payload.data).catch(handleError)
+    } else {
+        console.log("error")
     }
 }
 
@@ -117,24 +137,29 @@ function gotPayload(payloadObject) {
 function getOffer(desc) {
     pc1.setLocalDescription(desc)
     //把desc发给接收端
-    console.log("desc 发送" + desc)
+    var data = {
+        "type": "offer",
+        "data": desc,
+        "id": id,
+        "roomNumber": roomNumber.value
+    }
+    console.log(data)
+    client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
 }
 
-// function call() {
-//     let configuration = {
-//         iceServers: [{
-//             urls: ["stun:220.194.69.71:3478", "trun:220.194.69.71:3478"],
-//             username: "trun",
-//             credential: "trun",
-//             credentialType: "password"
-//         }]
-//     };
-//     pc1 = new webkitRTCPeerConnection(configuration)//发送端
-//     pc1.onicecandidate = (e) => {
-//         pc2.addIceCandidate(e.candidate).catch(handleError)
-//     }
-//
-// }
+function getAnswer(desc) {
+    pc1.setLocalDescription(desc)
+    // 发送desc到第一个端
+    var data = {
+        "type": "answer",
+        "data": desc,
+        "id": id,
+        "roomNumber": roomNumber.value
+    }
+    console.log(data)
+    client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
+}
+
 
 function getRemoteStream(d) {
     remoteVideo.srcObject = d.streams[0]
