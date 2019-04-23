@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+</head>
+<body>
+<div>
+    房间号：<input id="roomNumber"/><br>
+    用户名称：<input id="userName"/><br>
+    <button id="joinButton">join</button>
+</div>
+<div>
+    <video id="selfVideo" autoplay playsinline></video>
+    <video id="remoteVideo" autoplay playsinline></video>
+</div>
+<div id="playerDiv">
+
+</div>
+</body>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="js/ICECall.js"></script>
+</html>

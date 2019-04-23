@@ -1,6 +1,7 @@
 var http = require('http')
     , express = require('express')
     , serveIndex = require('serve-index')
+    , mqtt = require('mqtt')
 var app = express();
 app.use(serveIndex('./public/'))
 app.use(express.static('./public/'))

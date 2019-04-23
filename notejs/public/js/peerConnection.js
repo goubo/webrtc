@@ -33,8 +33,16 @@ function hangup() {
 }
 
 function call() {
-    pc1 = new webkitRTCPeerConnection()//发送端
-    pc2 = new webkitRTCPeerConnection()//接收端
+    let configuration = {
+        iceServers: [{
+            urls: ["stun:220.194.69.71:3478", "trun:220.194.69.71:3478"],
+            username: "trun",
+            credential: "trun",
+            credentialType: "password"
+        }]
+    };
+    pc1 = new webkitRTCPeerConnection(configuration)//发送端
+    pc2 = new webkitRTCPeerConnection(configuration)//接收端
 
     pc1.onicecandidate = (e) => {
         pc2.addIceCandidate(e.candidate).catch(handleError)
@@ -44,13 +52,14 @@ function call() {
         pc1.addIceCandidate(e.candidate).catch(handleError)
     }
     pc2.ontrack = getRemoteStream
-
     localStream.getTracks().forEach(t => {
         pc1.addTrack(t, localStream)
     })
+
     let offerOption = {
         offerToReceiveAudio: 0,
-        offerToReceiveVideo: 1
+        offerToReceiveVideo: 1,
+        iceRestart: true
     }
     pc1.createOffer(offerOption).then(getOffer).catch(handleError)
 
