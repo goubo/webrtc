@@ -27,7 +27,10 @@ function start() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices()) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
-        navigator.mediaDevices.enumerateDevices()
+        navigator.mediaDevices.getUserMedia({video: true, audio: true})
+            .then(m => {
+                return navigator.mediaDevices.enumerateDevices()
+            })
             .then(getMediaDevices)
             .catch(handleError);
     }
