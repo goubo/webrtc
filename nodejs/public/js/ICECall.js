@@ -71,7 +71,7 @@ function hangup() {
     }
     client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
     pc1.close()
-    client.close()
+    client.end()
     pc1 = null
     client = null
     joinButton.disabled = false
@@ -210,7 +210,7 @@ function gotPayload(payloadObject) {
         pc1.addIceCandidate(payload.data).catch(handleError)
     } else if (payload.type === 'hangUp') {
         pc1.close()
-        client.close()
+        client.end()
         pc1 = null
         client = null
         joinButton.disabled = false
