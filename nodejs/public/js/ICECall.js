@@ -1,19 +1,19 @@
-let playerDiv = document.querySelector("div#playerDiv"),
-    selfVideo = document.querySelector("video#selfVideo"),
-    remoteVideo = document.querySelector("video#remoteVideo"),
-    joinButton = document.querySelector("button#joinButton"),
-    hangUpButton = document.querySelector("button#hangUp"),
-    userName = document.querySelector("input#userName"),
-    roomNumber = document.querySelector("input#roomNumber"),
-    configuration = {
+let playerDiv = document.querySelector("div#playerDiv")
+    , selfVideo = document.querySelector("video#selfVideo")
+    , remoteVideo = document.querySelector("video#remoteVideo")
+    , joinButton = document.querySelector("button#joinButton")
+    , hangUpButton = document.querySelector("button#hangUp")
+    , userName = document.querySelector("input#userName")
+    , roomNumber = document.querySelector("input#roomNumber")
+    , configuration = {
         iceServers: [{
             urls: ["stun:220.194.69.71:3478", "turn:220.194.69.71:3478"],
             username: "trun",
             credential: "trun",
             credentialType: "password"
         }]
-    },
-    offerOption = {
+    }
+        , offerOption = {
         offerToReceiveAudio: true,
         offerToReceiveVideo: true,
         iceRestart: true
