@@ -67,8 +67,16 @@ function join() {
         let constraints = {
             video: {
                 frameRate: 30,
-                width: {exact: 3840},
-                height: {exact: 2160},
+                width: {
+                    min: 1280,
+                    ideal: 3840,
+                    max: 3840
+                },
+                height: {
+                    min: 720,
+                    ideal: 2160,
+                    max: 2160
+                },
                 deviceId: videoInputDeviceId ? {exact: videoInputDeviceId} : undefined
             }, audio: {
                 noiseSuppression: true,
