@@ -2,6 +2,7 @@ let playerDiv = document.querySelector("div#playerDiv"),
     selfVideo = document.querySelector("video#selfVideo"),
     remoteVideo = document.querySelector("video#remoteVideo"),
     joinButton = document.querySelector("button#joinButton"),
+    hangUpButton = document.querySelector("button#hangUp"),
     userName = document.querySelector("input#userName"),
     roomNumber = document.querySelector("input#roomNumber"),
     configuration = {
@@ -60,6 +61,22 @@ function getMediaDevices(devicesInfos) {
 start()
 
 joinButton.onclick = join
+hangUpButton.onclick = hangup
+
+function hangup() {
+    let data = {
+        "type": "hangUp",
+        "id": id,
+        "roomNumber": roomNumber.value,
+    }
+    client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
+    pc1.close()
+    client.close()
+    pc1 = null
+    client = null
+    joinButton.disabled = false
+    hangUpButton.disable = true
+}
 
 function join() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
@@ -98,6 +115,7 @@ function gotUserMediaStream(stream) {
     selfVideo.srcObject = stream
     localStream = stream
     joinButton.disabled = true
+    hangUpButton.disabled = false
     //join mqtt
     client = mqtt.connect('wss://v.goujinbo.com:61617')
     //mqtt 连接
@@ -126,6 +144,7 @@ function gotPayload(payloadObject) {
 
     } else if (payload.type === 'refuse') {
         //拒绝连接
+        joinButton.disabled = false
     } else if (payload.type === 'second') {
         //第二个进入的，接收端
         //发offer
@@ -189,6 +208,13 @@ function gotPayload(payloadObject) {
     } else if (payload.type === 'candidate') {
         console.log("candidate---")
         pc1.addIceCandidate(payload.data).catch(handleError)
+    } else if (payload.type === 'hangUp') {
+        pc1.close()
+        client.close()
+        pc1 = null
+        client = null
+        joinButton.disabled = false
+        hangUpButton.disable = true
     } else {
         console.log("error")
     }
