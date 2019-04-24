@@ -55,6 +55,7 @@ function getMediaDevices(devicesInfos) {
 
         }
     })
+    hangUpButton.disabled = true
 
 }
 
@@ -88,14 +89,14 @@ function join() {
             video: {
                 frameRate: 30,
                 width: {
-                    min: 1280,
-                    ideal: 3840,
-                    max: 3840
+                    // min: 1280,
+                    // max: 4096,
+                    ideal: 4096
                 },
                 height: {
-                    min: 720,
-                    ideal: 2160,
-                    max: 2160
+                    // min: 720,
+                    // max: 2160,
+                    ideal: 2160
                 },
                 deviceId: videoInputDeviceId ? {exact: videoInputDeviceId} : undefined
             }, audio: {
