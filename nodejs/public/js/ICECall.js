@@ -23,7 +23,7 @@ let playerDiv = document.querySelector("div#playerDiv"),
 
 var localStream, pc1, baseTopic = "mqtt/dome/conference/", id = randomWord(true, 8, 12), client
 
-function start(){
+function start() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices()) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
@@ -32,6 +32,7 @@ function start(){
             .catch(handleError);
     }
 }
+
 function getMediaDevices(devicesInfos) {
     devicesInfos.forEach(function (devicesInfo) {
         console.log("kind=" + devicesInfo.kind +
@@ -61,7 +62,21 @@ function join() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
-        let constraints = {video: {}, audio: false}
+        let videoInputDeviceId = videoInput.value
+        let audioInputDeviceId = audioInput.value
+        let constraints = {
+            video: {
+                frameRate: 30,
+                width: {exact: 3840},
+                height: {exact: 2160},
+                deviceId: videoInputDeviceId ? {exact: videoInputDeviceId} : undefined
+            }, audio: {
+                noiseSuppression: true,
+                echoCancellation: true,
+                deviceId: audioInputDeviceId ? {exact: audioInputDeviceId} : undefined
+
+            }
+        }
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotUserMediaStream)
             .catch(handleError)
