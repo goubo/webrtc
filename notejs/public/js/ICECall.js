@@ -17,8 +17,43 @@ let playerDiv = document.querySelector("div#playerDiv"),
         offerToReceiveVideo: true,
         iceRestart: true
     }
+    , audioInput = document.querySelector("select#audioInput")
+    , audioOutput = document.querySelector("select#audioOutput")
+    , videoInput = document.querySelector("select#videoInput")
 
 var localStream, pc1, baseTopic = "mqtt/dome/conference/", id = randomWord(true, 8, 12), client
+
+function start(){
+    if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices()) {
+        console.log("浏览器不支持 mediaDevices 接口")
+    } else {
+        navigator.mediaDevices.enumerateDevices()
+            .then(getMediaDevices)
+            .catch(handleError);
+    }
+}
+function getMediaDevices(devicesInfos) {
+    devicesInfos.forEach(function (devicesInfo) {
+        console.log("kind=" + devicesInfo.kind +
+            ";label=" + devicesInfo.label +
+            ";id=" + devicesInfo.deviceId +
+            ";groupId:" + devicesInfo.groupId)
+        var option = document.createElement("option")
+        option.text = devicesInfo.label
+        option.value = devicesInfo.deviceId
+        if (devicesInfo.kind === 'audioinput') {
+            audioInput.appendChild(option)
+        } else if (devicesInfo.kind === 'audiooutput') {
+            audioOutput.appendChild(option)
+        } else if (devicesInfo.kind === 'videoinput') {
+            videoInput.appendChild(option)
+
+        }
+    })
+
+}
+
+start()
 
 joinButton.onclick = join
 
@@ -26,7 +61,7 @@ function join() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
-        let constraints = {video: true, audio: false}
+        let constraints = {video: {}, audio: false}
         navigator.mediaDevices.getUserMedia(constraints)
             .then(gotUserMediaStream)
             .catch(handleError)
