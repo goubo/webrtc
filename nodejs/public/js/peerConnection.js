@@ -33,16 +33,8 @@ function hangup() {
 }
 
 function call() {
-    let configuration = {
-        iceServers: [{
-            urls: ["stun:220.194.69.71:3478", "trun:220.194.69.71:3478"],
-            username: "trun",
-            credential: "trun",
-            credentialType: "password"
-        }]
-    };
-    pc1 = new webkitRTCPeerConnection(configuration)//发送端
-    pc2 = new webkitRTCPeerConnection(configuration)//接收端
+    pc1 = new webkitRTCPeerConnection()//发送端
+    pc2 = new webkitRTCPeerConnection()//接收端
 
     pc1.onicecandidate = (e) => {
         pc2.addIceCandidate(e.candidate).catch(handleError)
