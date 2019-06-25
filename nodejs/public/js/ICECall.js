@@ -292,7 +292,6 @@ var preferOpus = function (sdp) {
             console.log("for :" + sdpLines[i]);
             if (mLineIndex == 0) {
                 mLineIndex = i;
-                continue;
             } else {
                 mLineIndex = i;
                 break;
