@@ -289,10 +289,11 @@ var preferOpus = function (sdp) {
     var mLineIndex = 0;
     for (var i = 0; i < sdpLines.length; i++) {
         if (sdpLines[i].search('m=audio') !== -1) {
-            if(mLineIndex == 0) {
+            console.log("for :" + sdpLines[i]);
+            if (mLineIndex == 0) {
                 mLineIndex = i;
                 continue;
-            }else{
+            } else {
                 mLineIndex = i;
                 break;
             }
