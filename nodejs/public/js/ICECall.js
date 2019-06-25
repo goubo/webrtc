@@ -297,7 +297,7 @@ var preferOpus = function (sdp) {
     if (mLineIndex === null) return sdp;
 
     for (i = 0; i < sdpLines.length; i++) {
-        if (sdpLines[i].search('H264/90000a') !== -1) {
+        if (sdpLines[i].search('H264/90000') !== -1) {
             var opusPayload = extractSdp(sdpLines[i], /:(\d+) opus\/48000/i);
             if (opusPayload)
                 sdpLines[mLineIndex] = setDefaultCodec(sdpLines[mLineIndex], opusPayload);
