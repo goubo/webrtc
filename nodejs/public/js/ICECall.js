@@ -6,18 +6,18 @@ let playerDiv = document.querySelector("div#playerDiv")
     , userName = document.querySelector("input#userName")
     , roomNumber = document.querySelector("input#roomNumber")
     , configuration = {
-        iceServers: [{
-            urls: ["stun:220.194.69.71:3478", "turn:220.194.69.71:3478"],
-            username: "trun",
-            credential: "trun",
-            credentialType: "password"
-        }]
-    }
-        , offerOption = {
-        offerToReceiveAudio: true,
-        offerToReceiveVideo: true,
-        iceRestart: true
-    }
+    iceServers: [{
+        urls: ["stun:220.194.69.71:3478", "turn:220.194.69.71:3478"],
+        username: "trun",
+        credential: "trun",
+        credentialType: "password"
+    }]
+}
+    , offerOption = {
+    offerToReceiveAudio: true,
+    offerToReceiveVideo: true,
+    iceRestart: true
+}
     , audioInput = document.querySelector("select#audioInput")
     , audioOutput = document.querySelector("select#audioOutput")
     , videoInput = document.querySelector("select#videoInput")
@@ -28,7 +28,7 @@ function start() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices()) {
         console.log("浏览器不支持 mediaDevices 接口")
     } else {
-        navigator.mediaDevices.getUserMedia({video: true, audio: true})
+        navigator.mediaDevices.getUserMedia({video: true, audio: false})
             .then(m => {
                 return navigator.mediaDevices.enumerateDevices()
             })
@@ -155,7 +155,7 @@ function gotPayload(payloadObject) {
             // e.candidate.candidate;
             if (e.candidate) {
                 //发送candidate 到接收端
-
+                pc1.iceConnectionState
                 var data = {
                     "type": "candidate",
                     "data": e.candidate,
@@ -166,6 +166,7 @@ function gotPayload(payloadObject) {
                 client.publish(baseTopic + "page/" + roomNumber.value, JSON.stringify(data))
 
             }
+
 
         }
         pc1.ontrack = getRemoteStream
@@ -223,6 +224,7 @@ function gotPayload(payloadObject) {
 
 
 function getOffer(desc) {
+    desc.sdp = preferOpus(desc.sdp)
     pc1.setLocalDescription(desc)
     //把desc发给接收端
     var data = {
@@ -236,6 +238,7 @@ function getOffer(desc) {
 }
 
 function getAnswer(desc) {
+    desc.sdp = preferOpus(desc.sdp)
     pc1.setLocalDescription(desc)
     // 发送desc到第一个端
     var data = {
@@ -279,3 +282,61 @@ function randomWord(randomFlag, min, max) {
     }
     return str
 }
+
+
+var preferOpus = function (sdp) {
+    var sdpLines = sdp.split('\r\n');
+
+    for (var i = 0; i < sdpLines.length; i++) {
+        if (sdpLines[i].search('m=audio') !== -1) {
+            var mLineIndex = i;
+            break;
+        }
+    }
+
+    if (mLineIndex === null) return sdp;
+
+    for (i = 0; i < sdpLines.length; i++) {
+        if (sdpLines[i].search('H264/90000a') !== -1) {
+            var opusPayload = extractSdp(sdpLines[i], /:(\d+) opus\/48000/i);
+            if (opusPayload)
+                sdpLines[mLineIndex] = setDefaultCodec(sdpLines[mLineIndex], opusPayload);
+            break;
+        }
+    }
+
+    sdpLines = removeCN(sdpLines, mLineIndex);
+
+    sdp = sdpLines.join('\r\n');
+    return sdp;
+};
+
+var extractSdp = function (sdpLine, pattern) {
+    var result = sdpLine.match(pattern);
+    return (result && result.length == 2) ? result[1] : null;
+};
+
+var setDefaultCodec = function (mLine, payload) {
+    var elements = mLine.split(' ');
+    var newLine = new Array();
+    var index = 0;
+    for (var i = 0; i < elements.length; i++) {
+        if (index === 3) newLine[index++] = payload;
+        if (elements[i] !== payload) newLine[index++] = elements[i];
+    }
+    return newLine.join(' ');
+};
+
+var removeCN = function (sdpLines, mLineIndex) {
+    var mLineElements = sdpLines[mLineIndex].split(' ');
+    for (var i = sdpLines.length - 1; i >= 0; i--) {
+        var payload = extractSdp(sdpLines[i], /a=rtpmap:(\d+) CN\/\d+/i);
+        if (payload) {
+            var cnPos = mLineElements.indexOf(payload);
+            if (cnPos !== -1) mLineElements.splice(cnPos, 1);
+            sdpLines.splice(i, 1);
+        }
+    }
+    sdpLines[mLineIndex] = mLineElements.join(' ');
+    return sdpLines;
+};
