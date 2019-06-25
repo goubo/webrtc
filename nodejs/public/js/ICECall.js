@@ -286,11 +286,16 @@ function randomWord(randomFlag, min, max) {
 
 var preferOpus = function (sdp) {
     var sdpLines = sdp.split('\r\n');
-
+    var mLineIndex = 0;
     for (var i = 0; i < sdpLines.length; i++) {
         if (sdpLines[i].search('m=audio') !== -1) {
-            var mLineIndex = i;
-            break;
+            if(mLineIndex == 0) {
+                mLineIndex = i;
+                continue;
+            }else{
+                mLineIndex = i;
+                break;
+            }
         }
     }
 
